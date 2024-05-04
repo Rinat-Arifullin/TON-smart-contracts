@@ -1,11 +1,11 @@
 import { toNano } from '@ton/core';
-import { Counter } from '../wrappers/Counter';
+import { SendTon } from '../wrappers/SendTon';
 import { NetworkProvider } from '@ton/blueprint';
 
 export async function run(provider: NetworkProvider) {
-    const counter = provider.open(await Counter.fromInit(BigInt(Math.floor(Math.random() * 10000))));
+    const sendTon = provider.open(await SendTon.fromInit());
 
-    await counter.send(
+    await sendTon.send(
         provider.sender(),
         {
             value: toNano('0.05'),
@@ -16,7 +16,7 @@ export async function run(provider: NetworkProvider) {
         }
     );
 
-    await provider.waitForDeploy(counter.address);
+    await provider.waitForDeploy(sendTon.address);
 
-    console.log('ID', await counter.getId());
+    // run methods on `sendTon`
 }
